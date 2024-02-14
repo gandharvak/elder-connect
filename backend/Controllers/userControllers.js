@@ -3,7 +3,7 @@ const { promisify } = require("util");
 
 // Importing Models
 const User = require("../Models/UserModel");
-const Test = require("../Models/TestModel");
+const HealthData = require("../Models/HealthModel");
 
 const signToken = (id) => {
   const token = jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -12,6 +12,20 @@ const signToken = (id) => {
 
   return token;
 };
+
+// Function to shuffle array using Fisher-Yates algorithm
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Function to check if a value is numeric
+function isNumeric(value) {
+  return !isNaN(parseFloat(value)) && isFinite(value);
+}
 
 exports.logUserIn = async (req, res) => {
   try {
@@ -128,6 +142,107 @@ exports.createUserAccount = async (req, res) => {
   }
 };
 
+exports.feedUserAccount = async (req, res) => {
+  try {
+    // Query all user accounts from the database
+    const users = await User.find({}, "-password"); // Exclude password field from the response
+
+    // Shuffle the array of user accounts
+    const shuffledUsers = shuffleArray(users);
+
+    // Send the shuffled array as the response
+    res.status(200).json({
+      status: "success",
+      data: shuffledUsers,
+      message: "Feed of user accounts retrieved successfully",
+    });
+  } catch (error) {
+    // Handling errors
+    console.error("Error retrieving feed of user accounts:", error);
+    res.status(500).json({
+      status: "fail",
+      data: null,
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.addHealthData = async (req, res) => {
+  try {
+    // Extract user ID from request or session (assuming you have authentication implemented)
+    const userId = req.user.id; // Adjust this according to your authentication method
+
+    // Extract health data from request body
+    const { bloodPressure, sugarLevel, heartRate, oxygenLevel } = req.body;
+
+    // Validate health data fields
+    if (
+      !isNumeric(bloodPressure) ||
+      !isNumeric(sugarLevel) ||
+      !isNumeric(heartRate) ||
+      !isNumeric(oxygenLevel)
+    ) {
+      return res.status(400).json({
+        status: "fail",
+        data: null,
+        message: "All health data fields must be numeric values",
+      });
+    }
+
+    // Create a new health data document
+    const newHealthData = new HealthData({
+      userId,
+      bloodPressure,
+      sugarLevel,
+      heartRate,
+      oxygenLevel,
+    });
+
+    // Save the new health data to the database
+    await newHealthData.save();
+
+    // Send success response
+    res.status(201).json({
+      status: "success",
+      data: {
+        healthData: newHealthData,
+      },
+      message: "Health data added successfully",
+    });
+  } catch (error) {
+    // Handle errors
+    console.error("Error adding health data:", error);
+    res.status(500).json({
+      status: "fail",
+      data: null,
+      message: "Internal server error",
+    });
+  }
+};
+exports.getMyHealthData = async (req, res) => {
+  try {
+    // Extract user ID from request or session (assuming you have authentication implemented)
+    const userId = req.user.id; // Adjust this according to your authentication method
+
+    // Query all health data for the current user and sort by date in descending order
+    const userHealthData = await HealthData.find({ userId }).sort({ date: -1 });
+
+    // Send success response with user's health data
+    res.status(200).json({
+      status: "success",
+      data: userHealthData,
+      message: "Health data retrieved successfully",
+    });
+  } catch (error) {
+    // Handle errors
+    console.error("Error retrieving health data:", error);
+    res.status(500).json({
+      status: "fail",
+      data: null,
+      message: "Internal server error",
+    });
+  }
+};
 //Controller for checking if a particular request is authenticated or not
 exports.protect = async (req, res, next) => {
   try {
