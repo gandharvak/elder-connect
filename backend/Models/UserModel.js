@@ -1,14 +1,9 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  firstName: {
+  name: {
     type: String,
     required: [true, "First Name is required"],
-    trim: true,
-  },
-  lastName: {
-    type: String,
-    required: [true, "Last Name is required"],
     trim: true,
   },
   emailId: {
@@ -27,13 +22,9 @@ const userSchema = new mongoose.Schema({
     required: [true, "Password is required"],
     minLength: [2, "Password must be at least 2 characters long"],
   },
-  questionsSolved: {
-    type: Number,
-    default: 0,
-  },
-  testSubmissionTime: {
-    type: Date,
-    default: null,
+  locality: {
+    type: String,
+    required: [true, "Password is required"],
   },
   accountCreatedAt: {
     type: Date,

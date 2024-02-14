@@ -12,5 +12,7 @@
 		2. Reason for appointment
 		3. Date
 		4. Time
+
+Done ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 4.Feed
 	-> bakichya lokanchya profiles, events 

@@ -1,0 +1,122 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "ElderConnect",
+    "dateExported": "2024-02-14T10:09:01.682Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "05063bd7-80ff-4564-8bf2-9170c45562b7",
+            "name": "User",
+            "containerId": "",
+            "created": "2024-02-14T09:19:12.509Z",
+            "sortNum": 10000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "d6683196-5dda-4d4f-aa18-26777e4e1fbe",
+            "colId": "d2b9d408-480e-4059-a26b-c84a502efac6",
+            "containerId": "05063bd7-80ff-4564-8bf2-9170c45562b7",
+            "name": "Create User Account",
+            "url": "http://localhost:8000/api/v1/user/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-02-14T09:19:20.279Z",
+            "modified": "2024-02-14T09:25:22.898Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Krishna Khalkar\",\n  \"emailId\": \"khalkarkrishna@gmail.com\",\n  \"password\": \"kri123\",\n  \"locality\": \"Latur,Maharashtra\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "951c5cb1-e353-4b8e-a566-0af27954f9b8",
+            "colId": "d2b9d408-480e-4059-a26b-c84a502efac6",
+            "containerId": "05063bd7-80ff-4564-8bf2-9170c45562b7",
+            "name": "Login User",
+            "url": "http://localhost:8000/api/v1/user/",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-02-14T09:26:27.722Z",
+            "modified": "2024-02-14T09:40:14.812Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"emailId\": \"kulkarnigandharv@gmail.com\",\n  \"password\": \"gan123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "04bb2c75-7c8b-4a68-bd07-712c5a84bbec",
+            "colId": "d2b9d408-480e-4059-a26b-c84a502efac6",
+            "containerId": "05063bd7-80ff-4564-8bf2-9170c45562b7",
+            "name": "Get Feed: User Accounts randomly",
+            "url": "http://localhost:8000/api/v1/user/feedUsers",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-02-14T09:37:59.336Z",
+            "modified": "2024-02-14T09:56:25.747Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2M4NjcyNjAwM2I5MWRiNmJhNTk4MCIsImlhdCI6MTcwNzkwMzcwMywiZXhwIjoxNzA5NjMxNzAzfQ.vxaXVpt6RiP3R40nVryfh9BiKMj0R40cWloCtypuAAo"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"bloodPressure\": 1,\n  \"sugarLevel\": 20,\n  \"heartRate\": 90,\n  \"oxygenLevel\": 90\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "0243d286-7479-4377-810a-cf6709ba513e",
+            "colId": "d2b9d408-480e-4059-a26b-c84a502efac6",
+            "containerId": "05063bd7-80ff-4564-8bf2-9170c45562b7",
+            "name": "Add Health Data",
+            "url": "http://localhost:8000/api/v1/user/health",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2024-02-14T09:54:08.007Z",
+            "modified": "2024-02-14T10:04:25.012Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2M4NjcyNjAwM2I5MWRiNmJhNTk4MCIsImlhdCI6MTcwNzkwMzcwMywiZXhwIjoxNzA5NjMxNzAzfQ.vxaXVpt6RiP3R40nVryfh9BiKMj0R40cWloCtypuAAo"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"bloodPressure\": 1,\n  \"sugarLevel\": 20,\n  \"heartRate\": 70,\n  \"oxygenLevel\": 90\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c7d6ae9b-c8ec-4cc8-891a-11a325214bbc",
+            "colId": "d2b9d408-480e-4059-a26b-c84a502efac6",
+            "containerId": "05063bd7-80ff-4564-8bf2-9170c45562b7",
+            "name": "Get My Health Data",
+            "url": "http://localhost:8000/api/v1/user/health",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2024-02-14T10:00:00.236Z",
+            "modified": "2024-02-14T10:03:52.110Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2M4NjcyNjAwM2I5MWRiNmJhNTk4MCIsImlhdCI6MTcwNzkwMzcwMywiZXhwIjoxNzA5NjMxNzAzfQ.vxaXVpt6RiP3R40nVryfh9BiKMj0R40cWloCtypuAAo"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
