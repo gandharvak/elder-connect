@@ -1,0 +1,16 @@
+1. Authentication system . login signup page, name, age , state, city
+2. HealthCare Monitoring. charts,pie charts, etc
+ 	input BP, sugar ,heart rate , oxygen level.
+	frontend la average dya
+3. Reminder Section -> 
+	1. Take Medicines
+		1. Medicine name
+		2. Quantity
+		3. Time
+	2. Doctor Appointments
+		1. Hospital Name
+		2. Reason for appointment
+		3. Date
+		4. Time
+4.Feed
+	-> bakichya lokanchya profiles, events 
