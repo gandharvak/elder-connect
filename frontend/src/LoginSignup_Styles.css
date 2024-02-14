@@ -117,6 +117,10 @@
     justify-self: flex-end;
     margin-left: 2rem;
   }
+
+  .signUp .illustration img{
+    height: 20rem;
+  }
   
   button:hover {
     filter: brightness(95%);

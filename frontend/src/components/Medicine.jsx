@@ -23,7 +23,7 @@ const Medicine = () => {
   };
   return (
     <>
-     <form style={{width:"250px"}}>
+     <form className='mt-3'>
         <div className="mb-3">
           <label htmlFor="medName" className="form-label">Medicine Name</label>
           <input type="text" className="form-control" id="medName" onChange={handleMedNameChange} />

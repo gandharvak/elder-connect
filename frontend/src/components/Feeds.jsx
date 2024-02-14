@@ -1,53 +1,57 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import FeedsCard from './FeedsCard.jsx'
-const Feeds = () => {
-  const newsFeeds = [
-    {
-      userId: 'user1',
-      image: 'image_url_1.jpg',
-      news: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-    },
-    {
-      userId: 'user2',
-      image: 'image_url_2.jpg',
-      news: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    },
-    {
-      userId: 'user3',
-      image: 'image_url_3.jpg',
-      news: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    },
-    {
-      userId: 'user3',
-      image: 'image_url_3.jpg',
-      news: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    },
-    {
-      userId: 'user3',
-      image: 'image_url_3.jpg',
-      news: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    },
-    {
-      userId: 'user3',
-      image: 'image_url_3.jpg',
-      news: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    },
-  ];
+import axios from 'axios';
 
-  console.log(newsFeeds);
+const Feeds = () => {
+
+  const [newsFeeds, setNewsFeeds] = useState();
+
+  useEffect(() => {
+    const apiUrl = 'http://localhost:8000/api/v1/user/feedUsers';
+
+    // Your Bearer token (replace 'your_token_here' with your actual token)
+    const token = localStorage.getItem("token");
+
+    // Making the GET request with the Authorization header
+    axios.get(apiUrl, {
+      headers: {
+        // Include the Authorization header with your Bearer token
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        // Handle the response here
+        console.log('Success:', response.data.data);
+        setNewsFeeds(response.data.data);
+      })
+      .catch(error => {
+        // Handle any errors here
+        console.error('Error:', error);
+      });
+  },[])
 
   return (
     <div>
-      <h3 className='text-center text-success'>News Feed</h3>
-      <div className='d-flex justify-content-center align-items-center flex-wrap gap-3'>
+      {
+        localStorage.getItem("token") ? 
+        <>
+
+          <h3 className='text-center text-success mt-2'>You may like to connect with these people:</h3>
+        <div className='d-flex justify-content-center align-items-center flex-wrap gap-3'>
         {
-          newsFeeds.map((news, index) => {
+          newsFeeds?.map((data, index) => {
             return (
-              <FeedsCard id={news.userId} path={news.image} news={news.news} />
+              <FeedsCard email={data.emailId} locality={data.locality} name={data.name} />
             )
           })
         }
-      </div>
+      </div> 
+        </>
+        :
+      <h4 className='text-center text-success mt-2'>Login Please</h4>
+
+      }
+
     </div>
   )
 }

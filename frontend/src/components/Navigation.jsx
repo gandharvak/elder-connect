@@ -1,7 +1,15 @@
 import React from 'react'
 import { NavLink } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 
 const Navigation = () => {
+
+  const logout = ()=>{
+    localStorage.clear();
+    navigate("/login")
+    
+  }
   return (
     <>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -66,6 +74,53 @@ const Navigation = () => {
                 Health Dashboard
               </NavLink>
         </li>
+
+        {
+
+          localStorage.getItem("token")? null :
+          <li class="nav-item">
+          <NavLink
+                to="/signup"
+                className={({ isActive }) =>
+                  `${isActive ? "active" : null} nav-link`
+                }
+              >
+                Signup
+              </NavLink>
+        </li>
+        }
+
+
+
+{
+
+  localStorage.getItem("token") ? null :
+        <li class="nav-item">
+          <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `${isActive ? "active" : null} nav-link`
+                }
+              >
+                Login
+              </NavLink>
+        </li>
+}
+
+{
+  localStorage.getItem("token") ? 
+  <li class="nav-item">
+  <NavLink
+        to="/login"
+        className={({ isActive }) =>
+          `${isActive ? "active" : null} nav-link`
+        }
+        onClick={logout}
+      >
+        Logout
+      </NavLink>
+</li> : null
+}
       </ul>
     </div>
   </div>

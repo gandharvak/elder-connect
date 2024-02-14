@@ -3,7 +3,7 @@ import Feeds from './Feeds'
 
 const HomePage = () => {
   return (
-    <div className='container'>
+    <div>
       <Feeds/>
     </div>
   )

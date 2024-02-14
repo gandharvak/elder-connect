@@ -30,7 +30,7 @@ const DoctorAppointment = () => {
   return (
     <>
       <form>
-        <div className="mb-3">
+        <div className="mb-3 mt-3">
           <label htmlFor="hospitalName" className="form-label">Hospital Name</label>
           <input type="text" className="form-control" id="hospitalName" onChange={handleHospitalNameChange} />
         </div>
