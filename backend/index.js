@@ -29,9 +29,9 @@ app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/user", userRoutes);
 
 app.get("/", (req, res) => {
-  res.send("<h1>TestConductor</h1>");
+  res.send("<h1>Elder Connect</h1>");
 });
 
 app.listen(PORT, () => {
-  console.log(`TestConductor listening on port ${PORT}`);
+  console.log(`Elder Connect listening on port ${PORT}`);
 });

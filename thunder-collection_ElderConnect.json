@@ -1,0 +1,55 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "ElderConnect",
+    "dateExported": "2024-02-14T09:30:19.673Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "05063bd7-80ff-4564-8bf2-9170c45562b7",
+            "name": "User",
+            "containerId": "",
+            "created": "2024-02-14T09:19:12.509Z",
+            "sortNum": 10000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "d6683196-5dda-4d4f-aa18-26777e4e1fbe",
+            "colId": "d2b9d408-480e-4059-a26b-c84a502efac6",
+            "containerId": "05063bd7-80ff-4564-8bf2-9170c45562b7",
+            "name": "Create User Account",
+            "url": "http://localhost:8000/api/v1/user/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-02-14T09:19:20.279Z",
+            "modified": "2024-02-14T09:25:22.898Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Krishna Khalkar\",\n  \"emailId\": \"khalkarkrishna@gmail.com\",\n  \"password\": \"kri123\",\n  \"locality\": \"Latur,Maharashtra\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "951c5cb1-e353-4b8e-a566-0af27954f9b8",
+            "colId": "d2b9d408-480e-4059-a26b-c84a502efac6",
+            "containerId": "05063bd7-80ff-4564-8bf2-9170c45562b7",
+            "name": "Login User",
+            "url": "http://localhost:8000/api/v1/user/",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-02-14T09:26:27.722Z",
+            "modified": "2024-02-14T09:29:13.835Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"emailId\": \"khalkarkrishna@gmail.com\",\n  \"password\": \"kri1223\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

@@ -48,15 +48,6 @@ exports.logUserIn = async (req, res) => {
       });
     }
 
-    // Check if the user has already given the test
-    if (user.testSubmissionTime !== null) {
-      return res.status(401).json({
-        status: "fail",
-        data: null,
-        message: "You've already submitted the test",
-      });
-    }
-
     // If everything is OK, send a token to the client
     const token = signToken(user._id); // Assuming you have an '_id' field in your User model
     return res.status(200).json({
@@ -76,13 +67,55 @@ exports.logUserIn = async (req, res) => {
   }
 };
 
-exports.getTotalQuestionCount = async (req, res) => {
+exports.createUserAccount = async (req, res) => {
   try {
-    // Parse data into array of objects
-    return res.status(200).json({
+    // Extracting user data from request body
+    const { name, emailId, password, locality } = req.body;
+
+    // Checking if emailId and password fields are provided
+    if (!emailId || !password) {
+      return res.status(400).json({
+        status: "fail",
+        data: null,
+        message: "EmailId and password fields are mandatory",
+      });
+    }
+
+    // Checking if name and locality  fields are provided
+    if (!name || !locality) {
+      return res.status(400).json({
+        status: "fail",
+        data: null,
+        message: "All fields are mandatory",
+      });
+    }
+
+    // Checking if the email is already in use
+    const existingUser = await User.findOne({ emailId });
+    if (existingUser) {
+      return res.status(400).json({
+        status: "fail",
+        data: null,
+        message: "Email already in use",
+      });
+    }
+
+    // Creating a new user document
+    const newUser = new User({
+      name,
+      emailId,
+      password,
+      locality,
+    });
+
+    // Saving the new user to the database
+    await newUser.save();
+
+    // Sending success response
+    res.status(201).json({
       status: "success",
-      totalQuestionCount: process.env.TOTAL_QUESTION_COUNT,
-      message: "Total Question Count Retrived Successfully",
+      data: { newUser },
+      message: "User account created successfully",
     });
   } catch (exception) {
     console.log(exception);
@@ -95,206 +128,6 @@ exports.getTotalQuestionCount = async (req, res) => {
   }
 };
 
-exports.verifyAnswer = async (req, res) => {
-  try {
-    // Extract necessary information from the request body
-    const { questionId, answer } = req.body;
-
-    // Check if 'questionId' and 'answer' fields are present
-    if (!questionId || !answer) {
-      return res.status(400).json({
-        status: "fail",
-        data: null,
-        message: "'questionId' and 'answer' fields are mandatory",
-      });
-    }
-
-    if (questionId == process.env.TOTAL_QUESTION_COUNT) {
-      return res.status(400).json({
-        status: "fail",
-        data: null,
-        message: "cannot verify last question",
-      });
-    }
-
-    // Find the user in the database
-    const userId = req.user.id;
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(400).json({
-        status: "fail",
-        data: null,
-        message: "User not found",
-      });
-    }
-
-    // Check if the provided questionId is less than or equal to questionsSolved
-    if (questionId <= user.questionsSolved) {
-      return res.status(200).json({
-        status: "success",
-        data: { questionAlreadySolved: true },
-        message: "Question already solved",
-      });
-    }
-
-    // Find the corresponding question in the 'Test' Document
-    const testQuestion = await Test.findOne({ questionId });
-
-    if (!testQuestion) {
-      return res.status(400).json({
-        status: "fail",
-        data: null,
-        message: "Invalid 'questionId'",
-      });
-    }
-
-    // Match the actual 'answer' with the answer given by the user
-    const isAnswerCorrect = testQuestion.answer === answer;
-
-    if (isAnswerCorrect) {
-      // If the answer is correct, increment 'questionsSolved' for the user
-      await User.findByIdAndUpdate(userId, { $inc: { questionsSolved: 1 } });
-    }
-
-    return res.status(200).json({
-      status: "success",
-      data: { answerCorrect: isAnswerCorrect },
-      message: isAnswerCorrect ? "Answer is correct" : "Answer is incorrect",
-    });
-  } catch (exception) {
-    console.log(exception);
-    return res.status(500).json({
-      status: "fail",
-      data: null,
-      message: "Something went wrong at our side!",
-      exception: exception.message,
-    });
-  }
-};
-
-exports.getNextQuestion = async (req, res) => {
-  try {
-    // Extract user information from the request, assuming user id is available in req.user.id
-    const userId = req.user.id;
-
-    // Find the user in the database
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(400).json({
-        status: "fail",
-        data: null,
-        message: "User not found",
-      });
-    }
-
-    // Check the 'questionsSolved' field
-    const questionsSolved = user.questionsSolved || 0;
-
-    // If questionsSolved is 0, send the first question
-    if (questionsSolved === 0) {
-      const firstQuestion = await Test.findOne(
-        { questionId: 1 },
-        { question: 1, questionId: 1, _id: 0 }
-      );
-
-      return res.status(200).json({
-        status: "success",
-        data: firstQuestion,
-        message: "First question retrieved successfully",
-      });
-    }
-
-    // If questionsSolved is greater than 0, send the next question
-    const nextQuestionId = questionsSolved + 1;
-
-    // Check if there is a next question
-    const nextQuestion = await Test.findOne(
-      { questionId: nextQuestionId },
-      { question: 1, questionId: 1, _id: 0 }
-    );
-
-    if (!nextQuestion) {
-      return res.status(200).json({
-        status: "success",
-        data: null,
-        message: "No more questions available",
-      });
-    }
-
-    return res.status(200).json({
-      status: "success",
-      data: nextQuestion,
-      message: "Next question retrieved successfully",
-    });
-  } catch (exception) {
-    console.log(exception);
-    return res.status(500).json({
-      status: "fail",
-      data: null,
-      message: "Something went wrong at our side!",
-      exception: exception.message,
-    });
-  }
-};
-
-exports.endTest = async (req, res) => {
-  try {
-    const { questionId, answer } = req.body;
-
-    // Verify the current answer with the current questionId
-    const testQuestion = await Test.findOne({ questionId });
-
-    if (!testQuestion) {
-      return res.status(400).json({
-        status: "fail",
-        data: null,
-        message: "Invalid 'questionId'",
-      });
-    }
-
-    // Check if the test is already given
-    const user = await User.findById(req.user.id);
-    if (user.testSubmissionTime !== null) {
-      return res.status(200).json({
-        status: "fail",
-        data: null,
-        message: "You've already Submitted the test Once!",
-      });
-    }
-
-    // Check if the provided answer is correct
-    const isAnswerCorrect = testQuestion.answer === answer;
-
-    if (isAnswerCorrect) {
-      // If answer is correct, increment questionsSolved count
-      await User.findByIdAndUpdate(req.user.id, {
-        $inc: { questionsSolved: 1 },
-      });
-    }
-
-    // Save the timestamp of the current instance as 'testSubmissionTime' in User Model
-    const submissionTime = new Date();
-    await User.findByIdAndUpdate(req.user.id, {
-      testSubmissionTime: submissionTime,
-    });
-
-    return res.status(200).json({
-      status: "success",
-      data: null,
-      message: "Test submitted successfully!",
-    });
-  } catch (exception) {
-    console.log(exception);
-    return res.status(500).json({
-      status: "fail",
-      data: null,
-      message: "Something went wrong at our side!",
-      exception: exception.message,
-    });
-  }
-};
 //Controller for checking if a particular request is authenticated or not
 exports.protect = async (req, res, next) => {
   try {
