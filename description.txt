@@ -1,6 +1,6 @@
 1. Authentication system . login signup page, name, age , state, city
 2. HealthCare Monitoring. charts,pie charts, etc
- 	input BP, sugar ,heart rate , oxygen level.
+ 	input BP, sugar, heart rate , oxygen level.
 	frontend la average dya
 3. Reminder Section -> 
 	1. Take Medicines
