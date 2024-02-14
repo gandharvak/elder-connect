@@ -1,9 +1,18 @@
-import React from 'react'
+import React from "react";
+import "./LoginSignup_Styles.css";
+import Signup from "./components/SignUp";
+import Error from "./components/Error";
+import Login from "./components/Login";
 
-const App = () => {
-  return (
-    <div>App</div>
-  )
+function App() {
+  return (  
+    <>
+    <div className="App">
+
+
+    </div>
+    </>
+  );
 }
 
-export default App
+export default App;
